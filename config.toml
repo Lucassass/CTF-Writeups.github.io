@@ -1,9 +1,9 @@
-baseURL = "https://examples.com"
+baseURL = "https://CTF-Writeups.github.io"
 title   = "CTF-Writeups"
 languageCode = "en-us"
 theme = "hello-friend-ng"
 
-paginate = 5
+paginate = 10
 
 [params]
   # dir name of your blog content (default is `content/posts`).
@@ -30,7 +30,7 @@ paginate = 5
 [languages]
   [languages.en]
     title = "Hello Friend"
-    subtitle = "A simple CTF-Writeup blog"
+    subtitle = "A simple theme for Hugo"
     keywords = ""
     copyright = ""
     menuMore = "Show more"
@@ -59,6 +59,6 @@ paginate = 5
         name = "About"
         url = "/about"
       [[languages.en.menu.main]]
-        identifier = "showcase"
-        name = "Showcase"
-        url = "/showcase"
+        identifier = "posts"
+        name = "posts"
+        url = "/posts"
