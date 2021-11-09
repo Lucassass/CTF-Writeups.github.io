@@ -2,29 +2,114 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Hello Friend</title>
-    <link>https://CTF-Writeups.github.io/</link>
+    <link>https://github.com/Lucassass/CTF-Writeups.github.io/</link>
     <description>Recent content on Hello Friend</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 11 Mar 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://CTF-Writeups.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 29 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://github.com/Lucassass/CTF-Writeups.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Killer-Queen CTF: A Kind Of Magic</title>
+      <link>https://github.com/Lucassass/CTF-Writeups.github.io/posts/akindofmagic/</link>
+      <pubDate>Fri, 29 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://github.com/Lucassass/CTF-Writeups.github.io/posts/akindofmagic/</guid>
+      <description>A Kind Of Magic We get a binary, which asks us for a magic input and outputs &amp;ldquo;Your magic is&amp;rdquo;, followed by a number. This is 0 unless the input is fairly large. We can test the length and find that the output is 0 until we write the 40th character - then it will always be 10.
+That it is 10 is interesting, since this is the ASCII value of a newline - so it could seem like we fill a buffer with 44 characters and the next character is printed back, which will then always be a newline.</description>
+    </item>
+    
     <item>
       <title>Killer-Queen CTF: Broke College Students</title>
-      <link>https://CTF-Writeups.github.io/posts/brokecollegestudents/</link>
-      <pubDate>Thu, 11 Mar 2021 00:00:00 +0000</pubDate>
+      <link>https://github.com/Lucassass/CTF-Writeups.github.io/posts/brokecollegestudents/</link>
+      <pubDate>Fri, 29 Oct 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://CTF-Writeups.github.io/posts/brokecollegestudents/</guid>
+      <guid>https://github.com/Lucassass/CTF-Writeups.github.io/posts/brokecollegestudents/</guid>
       <description>Broke College Students Basic idea: Format string attack in two steps. Step 1: leak an address, find the same offset with objdump, add offset of MONEY &amp;ndash; result is real address of MONEY in memory, which we want to override. Step 2: Use format string to write 999999 characters followed by %n, allowing us to place that value in an address we specify afterwards &amp;ndash; so we specify the MONEY address to get that amount of money.</description>
     </item>
     
     <item>
-      <title>About</title>
-      <link>https://CTF-Writeups.github.io/about/</link>
-      <pubDate>Wed, 09 Apr 2014 00:00:00 +0000</pubDate>
+      <title>Killer-Queen CTF: I Want To Break Free</title>
+      <link>https://github.com/Lucassass/CTF-Writeups.github.io/posts/iwanttobreakfree/</link>
+      <pubDate>Fri, 29 Oct 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://CTF-Writeups.github.io/about/</guid>
-      <description>Hugo is the world’s fastest framework for building websites. It is written in Go.
-It makes use of a variety of open source projects including:
- https://github.com/russross/blackfriday https://github.com/alecthomas/chroma https://github.com/muesli/smartcrop https://github.com/spf13/cobra https://github.com/spf13/viper  Learn more and contribute on GitHub.</description>
+      <guid>https://github.com/Lucassass/CTF-Writeups.github.io/posts/iwanttobreakfree/</guid>
+      <description>I Want To Break Free We are given a Python file which asks us whether we can escape from jail and prompts us for an input. This input is run directly in an exec() call &amp;ndash; except if it is found to be unsafe. It is unsafe in the following two cases:
+ One of the characters are outside the ASCII range, 33-126  This includes space, which is therefore not allowed   A word from the provided blacklist is part of the input  The blacklist contains:</description>
+    </item>
+    
+    <item>
+      <title>Killer-Queen CTF: Obligatory Shark</title>
+      <link>https://github.com/Lucassass/CTF-Writeups.github.io/posts/obligatoryshark/</link>
+      <pubDate>Fri, 29 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://github.com/Lucassass/CTF-Writeups.github.io/posts/obligatoryshark/</guid>
+      <description>Obligatory Shark We are given a wireshark file upon opening the file in Wireshark, we see a single Telnet stream. We right-click and Follow TCP Stream and see a user logging in with username user2 and password 33a465747cb15e84a26564f57cda0988. After testing that the password just wasn&amp;rsquo;t the flag we thought that it is likely just an simple hash like MD5, which we can crack with
+john hash.txt --wordlist=/usr/share/wordlists/rockyou.txt --format=Raw-MD5 which immediately spits out the password dancingqueen.</description>
+    </item>
+    
+    <item>
+      <title>Killer-Queen CTF: She&#39;s A Killed Queen</title>
+      <link>https://github.com/Lucassass/CTF-Writeups.github.io/posts/sheisakilledqueen/</link>
+      <pubDate>Fri, 29 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://github.com/Lucassass/CTF-Writeups.github.io/posts/sheisakilledqueen/</guid>
+      <description>She&amp;rsquo;s A Killed Queen We are given a corrupted PNG image. Expecting it, we find that width and height have both been set to 0. The CRC code therefore isn&amp;rsquo;t correct.
+Fixing the CRC code doesn&amp;rsquo;t help, since the image is still set as a 0x0 one. What we instead need to do is find the heigth and width values that will make the provided CRC code correct.
+We can fairly quickly bruteforce our way through this.</description>
+    </item>
+    
+    <item>
+      <title>Killer-Queen CTF: Tweety Birb</title>
+      <link>https://github.com/Lucassass/CTF-Writeups.github.io/posts/tweetybird/</link>
+      <pubDate>Fri, 29 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://github.com/Lucassass/CTF-Writeups.github.io/posts/tweetybird/</guid>
+      <description>Tweety Birb We are given a binary with the following main function
+int main(void) { char buffer [72]; long canary = *(long *)(in_FS_OFFSET + 0x28); puts(&amp;quot;What are these errors the compiler is giving me about gets and printf? Whatever, I have this little tweety birb protectinig me so it\&#39;s not like you hacker can do anything. Anyways, what do you think of magpies?&amp;quot;); gets(buffer); printf(buffer); puts(&amp;quot;\nhmmm interesting. What about water fowl?</description>
+    </item>
+    
+    <item>
+      <title>BuckEye: Pay2win</title>
+      <link>https://github.com/Lucassass/CTF-Writeups.github.io/posts/pay2win/</link>
+      <pubDate>Sat, 23 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://github.com/Lucassass/CTF-Writeups.github.io/posts/pay2win/</guid>
+      <description>Pay2win Opening the URL, we immediately get loads of popups. It detects if we try to open devtools and redirects to a rick roll clip.
+We can disable JS in the browser to avoid the popups, allowing us to open devtools. Inspecting the source, we find main.js, which among others contain the function
+function plantFlag () { const ciphertext = [234, 240, 234, 252, 214, 236, 140, 247, 173, 191, 158, 132, 56, 4, 32, 73, 235, 193, 233, 152, 125, 19, 19, 237, 186, 131, 98, 52, 186, 143, 127, 43, 226, 233, 126, 15, 225, 171, 85, 55, 173, 123, 21, 147, 97, 21, 237, 11, 254, 129, 2, 131, 101, 63, 149, 61] const plaintext = ciphertext.</description>
+    </item>
+    
+    <item>
+      <title>BuckEye: Stegbot</title>
+      <link>https://github.com/Lucassass/CTF-Writeups.github.io/posts/stegbot/</link>
+      <pubDate>Sat, 23 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://github.com/Lucassass/CTF-Writeups.github.io/posts/stegbot/</guid>
+      <description>Stegbot Description: Everybody loves steghide, so I made StegBot#2632 so that you can use it from Discord! Make sure to join our Discord server if you haven&amp;rsquo;t already, and DM /info to StegBot to get started.
+Steghide: https://github.com/perfectblue/ctf-writeups/tree/master/2020/csaw-quals-2020/take-it-easy#step-3 Discord server: https://discord.gg/WyUcFqrDjP Stegbot source code: https://github.com/qxxxb/StegBot (from writing /info to the bot)
+Solution The flag is stored in an environment variable called &amp;ldquo;FLAG&amp;rdquo;
+The flag is embedded in bof.jpg at the bottom of the source code (happens once every time the bot restarts):</description>
+    </item>
+    
+    <item>
+      <title>CSAW: Password_checker</title>
+      <link>https://github.com/Lucassass/CTF-Writeups.github.io/posts/password_checker/</link>
+      <pubDate>Fri, 10 Sep 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://github.com/Lucassass/CTF-Writeups.github.io/posts/password_checker/</guid>
+      <description>Password_Checker: Intro: Charlie forgot his password to login into his Office portal. Help him to find it. (This challenge was written for the person on your team who has never solved a binary exploitation challenge before! Welcome to pwning.)
+Netcat:nc pwn.chal.csaw.io 5000
+File: password_checker
+Go through The first hint you get is that this is for someone who hasn&amp;rsquo;t solved a binary exploit before therefore we know a good place too look is at the file which we recieved.</description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>https://github.com/Lucassass/CTF-Writeups.github.io/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://github.com/Lucassass/CTF-Writeups.github.io/about/</guid>
+      <description>This is my personal CTF-Writeup site I participate for teams SDU and can be found around CTF-Time under the username: Bathman. My CTF Wrirteup site/blog is written in Go using Hugo and the theme Hello-friend. Take a look a what you would like more updates to my site should come in the future, so keep posted or comback and read my writeups if you need inspriation for future ctf&amp;rsquo;s.
+Here are some of the places you can find me:</description>
     </item>
     
   </channel>

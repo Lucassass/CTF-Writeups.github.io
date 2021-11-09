@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="map[name:Lucas Sass Rósinberg]">
+<meta name="description" content="Stegbot Description: Everybody loves steghide, so I made StegBot#2632 so that you can use it from Discord! Make sure to join our Discord server if you haven&amp;rsquo;t already, and DM /info to StegBot to get started.
+Steghide: https://github.com/perfectblue/ctf-writeups/tree/master/2020/csaw-quals-2020/take-it-easy#step-3 Discord server: https://discord.gg/WyUcFqrDjP Stegbot source code: https://github.com/qxxxb/StegBot (from writing /info to the bot)
+Solution The flag is stored in an environment variable called &amp;ldquo;FLAG&amp;rdquo;
+The flag is embedded in bof.jpg at the bottom of the source code (happens once every time the bot restarts):" />
+<meta name="keywords" content="CTF" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="" />
+<link rel="canonical" href="https://github.com/Lucassass/CTF-Writeups.github.io/posts/stegbot/" />
+
+
+    <title>
+        
+            BuckEye: Stegbot :: Hello Friend  — A Simple CTF Writeup site/blog
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="/Lucassass/CTF-Writeups.github.io/main.17863a81d979b637a02cd7632a4d86e9d80563ef460fd6af1a56962efcaa066b.css">
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/Lucassass/CTF-Writeups.github.io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/Lucassass/CTF-Writeups.github.io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/Lucassass/CTF-Writeups.github.io/favicon-16x16.png">
+    <link rel="manifest" href="/Lucassass/CTF-Writeups.github.io/site.webmanifest">
+    <link rel="mask-icon" href="/Lucassass/CTF-Writeups.github.io/safari-pinned-tab.svg" color="">
+    <link rel="shortcut icon" href="/Lucassass/CTF-Writeups.github.io/favicon.ico">
+    <meta name="msapplication-TileColor" content="">
+    <meta name="theme-color" content="">
+
+
+
+<meta itemprop="name" content="BuckEye: Stegbot">
+<meta itemprop="description" content="Stegbot Description: Everybody loves steghide, so I made StegBot#2632 so that you can use it from Discord! Make sure to join our Discord server if you haven&rsquo;t already, and DM /info to StegBot to get started.
+Steghide: https://github.com/perfectblue/ctf-writeups/tree/master/2020/csaw-quals-2020/take-it-easy#step-3 Discord server: https://discord.gg/WyUcFqrDjP Stegbot source code: https://github.com/qxxxb/StegBot (from writing /info to the bot)
+Solution The flag is stored in an environment variable called &ldquo;FLAG&rdquo;
+The flag is embedded in bof.jpg at the bottom of the source code (happens once every time the bot restarts):"><meta itemprop="datePublished" content="2021-10-23T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2021-10-23T00:00:00+00:00" />
+<meta itemprop="wordCount" content="312">
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="BuckEye: Stegbot"/>
+<meta name="twitter:description" content="Stegbot Description: Everybody loves steghide, so I made StegBot#2632 so that you can use it from Discord! Make sure to join our Discord server if you haven&rsquo;t already, and DM /info to StegBot to get started.
+Steghide: https://github.com/perfectblue/ctf-writeups/tree/master/2020/csaw-quals-2020/take-it-easy#step-3 Discord server: https://discord.gg/WyUcFqrDjP Stegbot source code: https://github.com/qxxxb/StegBot (from writing /info to the bot)
+Solution The flag is stored in an environment variable called &ldquo;FLAG&rdquo;
+The flag is embedded in bof.jpg at the bottom of the source code (happens once every time the bot restarts):"/>
+
+
+
+
+
+
+
+
+    <meta property="article:published_time" content="2021-10-23 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+
+
+    </head>
+
+    
+        <body>
+    
+    
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="/Lucassass/CTF-Writeups.github.io" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">hello friend</span>
+            <span class="logo__cursor" style=
+                  "
+                   
+                   ">
+            </span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="/Lucassass/CTF-Writeups.github.io/about">About</a></li><li><a href="/Lucassass/CTF-Writeups.github.io/posts">posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+  <main class="post">
+
+    <div class="post-info">
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        2 minutes
+
+        
+      </p>
+    </div>
+
+    <article>
+      <h1 class="post-title">
+        <a href="https://github.com/Lucassass/CTF-Writeups.github.io/posts/stegbot/">BuckEye: Stegbot</a>
+      </h1>
+
+      
+
+      
+
+      
+
+      <div class="post-content">
+        <h1 id="stegbot">Stegbot</h1>
+<h2 id="description">Description:</h2>
+<p>Everybody loves steghide, so I made StegBot#2632 so that you can use it from Discord! Make sure to join our Discord server if you haven&rsquo;t already, and DM /info to StegBot to get started.</p>
+<p>Steghide: <a href="https://github.com/perfectblue/ctf-writeups/tree/master/2020/csaw-quals-2020/take-it-easy#step-3">https://github.com/perfectblue/ctf-writeups/tree/master/2020/csaw-quals-2020/take-it-easy#step-3</a>
+Discord server: <a href="https://discord.gg/WyUcFqrDjP">https://discord.gg/WyUcFqrDjP</a>
+Stegbot source code: <a href="https://github.com/qxxxb/StegBot">https://github.com/qxxxb/StegBot</a> (from writing /info to the bot)</p>
+<h2 id="solution">Solution</h2>
+<p>The flag is stored in an environment variable called &ldquo;FLAG&rdquo;</p>
+<p>The flag is embedded in bof.jpg at the bottom of the source code (happens once every time the bot restarts):</p>
+<pre tabindex="0"><code class="language-typescript=" data-lang="typescript=">stegEmbed('bof.jpg', FLAG, randomString())
+</code></pre><p>If we can get a hold of this output image and the password used to embed the flag, we can use the bot&rsquo;s /extract command to get the flag</p>
+<p>Having a closer look at the stegEmbed function, we can see that the output path and the stegHide password are both logged:</p>
+<pre tabindex="0"><code class="language-typescript=" data-lang="typescript=">logger.info({ imagePath, outputPath, password })
+</code></pre><p>The log file is located at ./app.log:</p>
+<pre tabindex="0"><code class="language-typescript=" data-lang="typescript=">const logger = pino(pino.destination('app.log'))
+</code></pre><p>Curl allows getting local files with the syntax <code>curl file://&lt;path&gt;</code></p>
+<p>Looking at the source code, we can use the /embed bot command without a message to return an arbitrary file:</p>
+<pre tabindex="0"><code class="language-typescript=" data-lang="typescript=">async function commandEmbed (interaction: CommandInteraction) {
+  const imageURL = interaction.options.getString('image_url')!
+  const imagePath = path.join(TMP_DIR, `${randomString()}.jpg`)
+  downloadFile(imageURL, imagePath)
+
+  const message = interaction.options.getString('message')
+  const password = interaction.options.getString('password')
+
+  if (!message) {
+    await interaction.reply({
+      content: &quot;No message provided, so here's the blank image&quot;,
+      files: [imagePath],
+      ephemeral: true
+    })
+    return
+  }
+</code></pre><p>Looking at the jail.cfg file in the source code, we see that the app directory is mounted at /app inside the docker virtual machine</p>
+<p>Now we can try to get a hold of the log file with the /embed command:
+<code>/embed image_url:file:///app/app.log</code>
+&hellip;
+Success!
+<img src="https://i.imgur.com/GWqmFH5.png" alt=""></p>
+<p>Opening this file in <code>less</code>, we can see that the first entry has the following info:</p>
+<pre tabindex="0"><code>{&quot;level&quot;:30,&quot;time&quot;:1634959870125,&quot;pid&quot;:1,&quot;hostname&quot;:&quot;NSJAIL&quot;,&quot;imagePath&quot;:&quot;bof.jpg&quot;,&quot;outputPath&quot;:&quot;/tmp/images/a7fba042185aa216aaf2f87763b65724.jpg&quot;,&quot;password&quot;:&quot;e3cde4ceae826098ba87716de396e028&quot;}
+</code></pre><p>Now we can use the /extract command with the info from the log:
+<code>/extract image_url:file:///tmp/images/7fba042185aa216aaf2f87763b65724.jpg password: e3cde4ceae826098ba87716de396e028</code></p>
+<p>And then we get the flag:
+<img src="https://i.imgur.com/AaVQSaa.png" alt=""></p>
+
+      </div>
+    </article>
+
+    <hr />
+
+    <div class="post-info">
+      
+      
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        312 Words
+      </p>
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        
+          2021-10-23 02:00
+        
+
+         
+          
+        
+      </p>
+    </div>
+
+    
+    <div class="pagination">
+        <div class="pagination__title">
+            <span class="pagination__title-h"></span>
+            <hr />
+        </div>
+
+        <div class="pagination__buttons">
+            
+            <span class="button previous">
+                <a href="https://github.com/Lucassass/CTF-Writeups.github.io/posts/pay2win/">
+                    <span class="button__icon">←</span>
+                    <span class="button__text">BuckEye: Pay2win</span>
+                </a>
+            </span>
+            
+
+            
+            <span class="button next">
+                <a href="https://github.com/Lucassass/CTF-Writeups.github.io/posts/password_checker/">
+                    <span class="button__text">CSAW: Password_checker</span>
+                    <span class="button__icon">→</span>
+                </a>
+            </span>
+            
+        </div>
+    </div>
+
+
+    
+
+    
+
+  </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    
+    
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+<script type="text/javascript" src="/Lucassass/CTF-Writeups.github.io/bundle.min.599099f1f14b78b657d524b28e10e0c5098e7cd46e9c7aed73d577068a276c3ff1bb234cbf29cb313333e83cf411727b43157c91ce5b809e2ffc81664614608e.js" integrity="sha512-WZCZ8fFLeLZX1SSyjhDgxQmOfNRunHrtc9V3BoonbD/xuyNMvynLMTMz6Dz0EXJ7QxV8kc5bgJ4v/IFmRhRgjg=="></script>
+
+
+
+    </body>
+</html>

