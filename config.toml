@@ -21,11 +21,12 @@ theme = "hello-friend-ng"
     minuteReadingTime = "min read"
 
     [languages.en.params.logo]
-      logoText = "hello friend"
-      logoHomeLink = "" # "" = http://localhost:1313/Lucassass/CTF-Writeups.github.io/ 
-      # or
-      # path = "/img/your-example-logo.svg"
-      # alt = "Your example logo alt text"
+       logoText = "hello friend"
+      logoHomeLink = "/"
+    # or
+    #
+    # path = "/img/your-example-logo.svg"
+    # alt = "Your example logo alt text"
 
     [languages.en.menu]
       [[languages.en.menu.main]]
