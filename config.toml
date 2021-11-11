@@ -1,4 +1,4 @@
-baseURL = "https://github.com/Lucassass/CTF-Writeups.github.io/"
+baseURL = "https://lucassass.github.io/CTF-Writeups.github.io/"
 title   = "CTF-Writeups"
 languageCode = "en-us"
 theme = "hello-friend-ng"
