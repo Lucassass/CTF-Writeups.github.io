@@ -3,10 +3,13 @@ title   = "CTF-Writeups"
 languageCode = "en-us"
 theme = "hello-friend-ng"
 
+[taxonomies]
+  tag      = "tags"
+  category = "categories"
+
 [params]
   # "light" or "dark"
   defaultTheme = "dark"
-
 
   # Show reading time in minutes for posts
   showReadingTime = true
