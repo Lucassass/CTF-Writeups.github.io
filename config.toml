@@ -25,7 +25,7 @@ theme = "hello-friend-ng"
 
     [languages.en.params.logo]
        logoText = "hello friend"
-      logoHomeLink = "/"
+    #  logoHomeLink = "/"
     # or
     # Direct path
     # path = "/img/your-example-logo.svg"
