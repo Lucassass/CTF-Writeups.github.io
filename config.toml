@@ -27,9 +27,9 @@ theme = "hello-friend-ng"
        logoText = "hello friend"
       logoHomeLink = "/"
     # or
-    #
+    # Direct path
     # path = "/img/your-example-logo.svg"
-    # alt = "Your example logo alt text"
+    # alt = "Your example logo alt text " 
 
     [languages.en.menu]
       [[languages.en.menu.main]]
